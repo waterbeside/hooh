@@ -1,0 +1,11 @@
+{
+  "watch": ["lib", "typings", "example"],
+  "ext": "ts, js, json",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "execMap": {
+    "ts": "ts-node",
+    "js": "node"
+  }
+}
