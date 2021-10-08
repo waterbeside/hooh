@@ -1,20 +1,29 @@
 {
   "name": "koaok",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "example-start": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./example/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Natron Kan",
   "license": "ISC",
   "dependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/ioredis": "^4.26.7",
     "@types/koa": "^2.13.4",
+    "@types/koa-bodyparser": "^4.3.3",
     "@types/koa-router": "^7.4.3",
+    "dotenv": "^10.0.0",
+    "glob": "^7.1.7",
+    "ioredis": "^4.27.8",
     "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0"
   },
   "devDependencies": {
+    "nodemon": "^2.0.13",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
   }
