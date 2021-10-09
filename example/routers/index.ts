@@ -6,5 +6,10 @@ const routes:RouteConfigItem[] = [
     controller: 'home.index',
     method: 'get'
   },
+  {
+    match: '/orm',
+    controller: 'orm.index',
+    method: 'get'
+  },
 ]
 export default routes 
