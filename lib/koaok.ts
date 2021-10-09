@@ -10,7 +10,15 @@ import { loadExtends } from './loader/extends'
 import { Redis, loadRedis } from './loader/redis'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
+import { getConnection, createOrmConnections, OrmConnectionOptions } from './ormConnections'
 
+export { 
+  Controller,
+  Logic,
+  getConnection,
+  OrmConnectionOptions as  ConnectionOptions,
+  createOrmConnections as createConnections
+}
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
 
@@ -113,13 +121,13 @@ const koaok:Koaok = {
       })
     }
 
-    console.log('appPath', options.APP_PATH)
     // 加载config
     this._config = configLoader.loadConfig()
     loadExtends(app)
     loadRedis()
     // 加载路由（加载路由时会自动加载控制器）
     loadRoutes(app)
+    
     this.app = app
     return this.app
   },
