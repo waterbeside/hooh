@@ -8,7 +8,6 @@ interface IControllerLoaderReturn {
 const controllerMap = new Map()
 const controllerClass = new Map()
 export const loadController = function(controllerPath: string): IControllerLoaderReturn {
-  console.log('controllerPath', controllerPath)
 
   const isTsRun = process.env.TS_RUN ? process.env.TS_RUN.trim()  === '1' : false
   const files = glob.sync(`${controllerPath}/**/*.${isTsRun ? 'ts' : 'js'}`)
