@@ -31,7 +31,7 @@ export async function loadRoutes(app: App): Promise<void> {
       }
       const controllerInstance = new controllerClass(option)
       if (controllerInstance && controllerInstance[controllerMethod]) {
-        await controllerInstance[controllerMethod]()
+        await controllerInstance[controllerMethod](option)
       }
     })
     if (koaok.router[method]) {
