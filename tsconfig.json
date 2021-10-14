@@ -70,7 +70,9 @@
   "exclude": [
     "dist/*",
     "node_modules",
-    "example/*",
     "**/*.spec.ts"
+  ],
+  "include": [
+    "lib/*"
   ]
 }

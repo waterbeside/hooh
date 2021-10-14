@@ -13,6 +13,7 @@ import Router from 'koa-router'
 import { getConnection, createOrmConnections, OrmConnectionOptions } from './ormConnections'
 import { Context } from 'koa'
 import * as helper from './helper'
+import * as decorators from './decorators'
 
 export { 
   Controller,
@@ -21,7 +22,8 @@ export {
   getConnection,
   OrmConnectionOptions as  ConnectionOptions,
   createOrmConnections as createConnections,
-  helper
+  helper,
+  decorators
 }
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
