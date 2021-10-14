@@ -11,13 +11,17 @@ import { Redis, loadRedis } from './loader/redis'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { getConnection, createOrmConnections, OrmConnectionOptions } from './ormConnections'
+import { Context } from 'koa'
+import * as helper from './helper'
 
 export { 
   Controller,
+  Context,
   Logic,
   getConnection,
   OrmConnectionOptions as  ConnectionOptions,
-  createOrmConnections as createConnections
+  createOrmConnections as createConnections,
+  helper
 }
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
@@ -57,7 +61,7 @@ export interface Koaok {
   config: <T>(name: string) => T | undefined
   Controller: typeof Controller
   Logic: typeof Logic
-  redis?: Redis
+  redis: Redis
   controller?: Controller,
   router: Router
 }
@@ -94,6 +98,7 @@ const koaok:Koaok = {
   Controller,
   Logic,
   router,
+  redis: {} as Redis,
   options:(()=>{
     const appPath = path.join(process.cwd(), 'src')
     const appControllerPath = createControllerPath(appPath)
