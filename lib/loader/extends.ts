@@ -6,17 +6,20 @@ import contextExtends from '../extend/context'
 export async function loadExtends(app: App): Promise<void> {
 
   const appPath = Koaok.options.APP_PATH
-  const contextPath = path.join(appPath as string, 'extends/context')
+  const extendsPath = path.join(appPath as string, 'extends')
 
-  let customerContextExtends = []
+  let customerExtends = []
   try {
-    customerContextExtends = require(contextPath).default
+    customerExtends = require(extendsPath).default
+    if (!(customerExtends instanceof Array)) {
+      customerExtends = []
+    }
   } catch (error) {
     // PASS
   }
   const extendsList = [
     ...contextExtends,
-    ...customerContextExtends
+    ...customerExtends
   ]
   extendsList.forEach((middleware: Middleware) => {
     app.use(middleware)
