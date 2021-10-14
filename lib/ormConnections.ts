@@ -84,8 +84,6 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
       if (typeof connectionMap[name] === 'undefined') {
         throw new Error(`No ${name} connection`)
       }
-      console.log('connectionMap[name]', connectionMap[name])
-
       return connectionMap[name]
     }
     return connectionMap
