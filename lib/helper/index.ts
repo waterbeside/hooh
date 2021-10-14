@@ -6,7 +6,7 @@ import { isEmpty } from './is'
  * @param {number} time 延迟的时间,单位毫秒
  */
 export function sleep(time = 0){
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(true)
     }, time)
