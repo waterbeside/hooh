@@ -1,4 +1,4 @@
-import hooh, { Context, helper } from "../hooh"
+import hooh, { Context, helper } from '../hooh'
 
 
 interface LockOptions {
@@ -28,8 +28,8 @@ export function lock(lockKey: string, lockOption: LockOptions | null = null) {
   const opt = {...defaultOpt, ...lockOption}
   // console.log(hooh.app?.context)
   return function(target: any, key: string, descriptor: PropertyDescriptor) {
-    const _value = descriptor.value;
-    if (typeof _value === "function") {
+    const _value = descriptor.value
+    if (typeof _value === 'function') {
       descriptor.value = async function(this: any, ...args: any[]) {
         if (!hooh.redis) {
           throw new Error('Use "lock decorators" must load redis first')
@@ -40,16 +40,16 @@ export function lock(lockKey: string, lockOption: LockOptions | null = null) {
         const lockRes = await hooh.redis.lock(lockKey, opt)
         if (!lockRes) {
           if (opt.lockReturn === 'json') {
-            return ctx.apiReturn(opt.errorCode as number, 'Locked!');
+            return ctx.apiReturn(opt.errorCode as number, 'Locked!')
           } else {
             throw new Error
           }
         }
-        const res = await _value.apply(this, args);
+        const res = await _value.apply(this, args)
         await hooh.redis.unlock(lockKey)
-        return res;
-      };
+        return res
+      }
     }
-    return descriptor;
-  };
+    return descriptor
+  }
 }

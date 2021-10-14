@@ -62,7 +62,7 @@ export interface Hooh {
   Controller: typeof Controller
   Logic: typeof Logic
   redis: Redis
-  controller?: Controller,
+  controller?: Controller
   router: Router
 }
 
@@ -119,7 +119,7 @@ const hooh:Hooh = {
     this.options = options
     const app = new Koa() as App
     app.hooh = hooh
-    app.use(bodyParser());
+    app.use(bodyParser())
     if (this.options.middlewares && this.options.middlewares.length > 0) {
       this.options.middlewares.forEach((item) => {
         app.use(item)
@@ -140,9 +140,5 @@ const hooh:Hooh = {
     return configLoader.getConfig<T>(name, this._config)
   }
 }
-
-
-
-
 
 export default hooh

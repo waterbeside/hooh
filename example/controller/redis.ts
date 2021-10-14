@@ -1,7 +1,7 @@
 
-import hooh, { Controller } from '../../lib/hooh';
+import hooh, { Controller } from '../../lib/hooh'
 import { lock } from '../../lib/decorators'
-import { sleep } from '../../lib/helper/index';
+import { sleep } from '../../lib/helper/index'
 
 class Home extends Controller {
   async index(): Promise<any> {

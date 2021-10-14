@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { isEmpty } from './is';
+import { isEmpty } from './is'
 
 /**
  * 异步延迟
@@ -40,7 +40,7 @@ export function escapeHtml(str: string): string {
       default:
         return a
     }
-  });
+  })
 }
 
 /**
@@ -62,14 +62,14 @@ export function replaceTemplateStr(templateStr: string, params: {[key: string]: 
   }
 
   const reg = new RegExp(`(?<=\\${opt.startTag}).*?(?=\\${opt.endTag})`, 'g')
-  const matchParams = templateStr.match(reg); // 匹配出参数（参数用${}包裹）
-  let returnStr = templateStr;
+  const matchParams = templateStr.match(reg) // 匹配出参数（参数用${}包裹）
+  let returnStr = templateStr
   if (!isEmpty(matchParams)) {
     for (const param of matchParams as any) {
-      const paramReg = new RegExp(`\\${opt.startTag}${param}\\${opt.endTag}`, 'g');
-      const paramVal = isEmpty(params) ? '' : (params[param] || '');
-      returnStr = returnStr.replace(paramReg, paramVal);
+      const paramReg = new RegExp(`\\${opt.startTag}${param}\\${opt.endTag}`, 'g')
+      const paramVal = isEmpty(params) ? '' : (params[param] || '')
+      returnStr = returnStr.replace(paramReg, paramVal)
     }
   }
-  return returnStr;
+  return returnStr
 }

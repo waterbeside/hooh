@@ -1,6 +1,6 @@
 import IORedis,  { RedisOptions } from 'ioredis'
 import dayjs from 'dayjs'
-import { sleep } from '../helper';
+import { sleep } from '../helper'
 
 export interface LockOptions {
   ex?: number
@@ -102,42 +102,42 @@ export default class Redis extends IORedis {
     }
     const opt = {...defaultOpt, ...lockOption}
     if (opt.loop < 1) {
-      return false;
+      return false
     }
-    let lock = false;
-    const cacheKey = `_lock:${lockKey}`;
+    let lock = false
+    const cacheKey = `_lock:${lockKey}`
 
     // 获取锁
-    const now = parseInt(dayjs().format('X'), 10);
-    const expires = now + opt.ex + 1;
+    const now = parseInt(dayjs().format('X'), 10)
+    const expires = now + opt.ex + 1
     lock = (await this.set(cacheKey, expires, ['ex', opt.ex, 'nx'])) ? true : false
 
     if (!lock) {
       // 如果取不到锁
-      let lockData = await this.cache(cacheKey);
-      lockData = parseInt(lockData, 10);
+      let lockData = await this.cache(cacheKey)
+      lockData = parseInt(lockData, 10)
       if (now > lockData) { // 检查锁过期没
-        await this.unlock(lockKey);
-        lock = await this.lock(lockKey, opt);
+        await this.unlock(lockKey)
+        lock = await this.lock(lockKey, opt)
       }
     }
     if (!lock) {
       // 休眠20毫秒
-      await sleep(opt.wait);
-      opt.loop = opt.loop - 1 || 0;
-      lock = await this.lock(lockKey, opt);
+      await sleep(opt.wait)
+      opt.loop = opt.loop - 1 || 0
+      lock = await this.lock(lockKey, opt)
     }
     // 返回锁
-    return lock;
+    return lock
   }
 
   /**
    * 释放锁。
    */
   async unlock(lockKey: string) {
-    const cacheKey = `_lock:${lockKey}`;
-    const res = await this.del(cacheKey);
-    return res;
+    const cacheKey = `_lock:${lockKey}`
+    const res = await this.del(cacheKey)
+    return res
   }
 
 

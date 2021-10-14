@@ -2,7 +2,7 @@ import hooh, { App } from '../hooh'
 import Redis from '../extend/redis'
 import { RedisOptions } from 'ioredis'
 
-export { Redis, RedisOptions };
+export { Redis, RedisOptions }
 
 
 

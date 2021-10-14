@@ -9,15 +9,15 @@ export function objToString(obj: any): string {
 }
 
 export function isRegExp(obj: any) {
-  return objToString(obj) === 'RegExp';
+  return objToString(obj) === 'RegExp'
 }
 
 export function isNull(obj: any): boolean {
-  return obj === null;
+  return obj === null
 }
 
 export function isUndefined(obj: any): boolean  {
-  return obj === void 0;
+  return obj === void 0
 }
 
 /**
@@ -27,9 +27,9 @@ export function isUndefined(obj: any): boolean  {
  */
 export function isArray(obj: any): boolean {
   if (Array.isArray) {
-    return Array.isArray(obj);
+    return Array.isArray(obj)
   }
-  return Object.prototype.toString.call(obj) === '[object Array]';
+  return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
 /**
@@ -43,5 +43,5 @@ export function isEmpty(obj: any): boolean {
   if ((typeof obj === 'string' || isArray(obj)) && obj.length === 0) return true
   if (typeof obj === 'object' && obj !== null && Object.keys(obj).length === 0) true
   if (obj === false) return true
-  return false;
+  return false
 }
