@@ -1,4 +1,4 @@
-import koaok, { Context, helper } from "../koaok"
+import hooh, { Context, helper } from "../hooh"
 
 
 interface LockOptions {
@@ -22,22 +22,22 @@ export function lock(lockKey: string, lockOption: LockOptions | null = null) {
     loop: 50,
     wait: 20,
     lockReturn: 'json',
-    errorCode: koaok.config('lockedErrorCode') || -1,
+    errorCode: hooh.config('lockedErrorCode') || -1,
     statusCode: 500
   }
   const opt = {...defaultOpt, ...lockOption}
-  // console.log(koaok.app?.context)
+  // console.log(hooh.app?.context)
   return function(target: any, key: string, descriptor: PropertyDescriptor) {
     const _value = descriptor.value;
     if (typeof _value === "function") {
       descriptor.value = async function(this: any, ...args: any[]) {
-        if (!koaok.redis) {
+        if (!hooh.redis) {
           throw new Error('Use "lock decorators" must load redis first')
         }
         const ctx = this.ctx as Context
         const params = this.ctx.input()
         lockKey = helper.replaceTemplateStr(lockKey, params)
-        const lockRes = await koaok.redis.lock(lockKey, opt)
+        const lockRes = await hooh.redis.lock(lockKey, opt)
         if (!lockRes) {
           if (opt.lockReturn === 'json') {
             return ctx.apiReturn(opt.errorCode as number, 'Locked!');
@@ -46,7 +46,7 @@ export function lock(lockKey: string, lockOption: LockOptions | null = null) {
           }
         }
         const res = await _value.apply(this, args);
-        await koaok.redis.unlock(lockKey)
+        await hooh.redis.unlock(lockKey)
         return res;
       };
     }

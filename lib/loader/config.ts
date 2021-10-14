@@ -1,5 +1,5 @@
 import path from 'path'
-import koaok from '../koaok'
+import hooh from '../hooh'
 import defaultConfig from '../config'
 export interface LoadConfigRes {
   [key: string]: any
@@ -8,7 +8,7 @@ export interface LoadConfigRes {
 
 export default {
   loadConfig():LoadConfigRes {
-    const configPath = path.join(koaok.options.APP_PATH as string, 'config')
+    const configPath = path.join(hooh.options.APP_PATH as string, 'config')
     try {
       const config = require(configPath).default
       return {...defaultConfig, ...config}

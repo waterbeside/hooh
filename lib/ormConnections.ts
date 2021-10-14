@@ -1,5 +1,5 @@
 import path from 'path'
-import koaok from './koaok'
+import hooh from './hooh'
 import { createConnections, Connection, ConnectionOptions } from 'typeorm'
 
 
@@ -39,7 +39,7 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
         if (!entities) {
           if  (entitiesPath) {
             entities = entitiesPath.map((pathItem: any) => {
-              return formatExt(path.join(koaok.options.APP_PATH as string, pathItem, '*'))
+              return formatExt(path.join(hooh.options.APP_PATH as string, pathItem, '*'))
             })
           } else {
             continue
@@ -76,7 +76,7 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
   export async function getConnection(name: string): Promise<Connection>
   export  async function getConnection(name: string|undefined = undefined): Promise<IConnectionMap | Connection> {
     if (!connectionMap || Object.keys(connectionMap).length < 1) {
-      const res = await createOrmConnections(koaok.config('orm') as OrmConnectionOptions[])
+      const res = await createOrmConnections(hooh.config('orm') as OrmConnectionOptions[])
       if (!res || Object.keys(res).length < 1) {
       }
     }

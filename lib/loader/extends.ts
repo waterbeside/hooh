@@ -1,11 +1,11 @@
 import { Middleware } from 'koa'
 import path from 'path'
-import Koaok, { App } from '../koaok'
+import hooh, { App } from '../hooh'
 import contextExtends from '../extend/context'
 
 export async function loadExtends(app: App): Promise<void> {
 
-  const appPath = Koaok.options.APP_PATH
+  const appPath = hooh.options.APP_PATH
   const extendsPath = path.join(appPath as string, 'extends')
 
   let customerExtends = []

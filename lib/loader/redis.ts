@@ -1,4 +1,4 @@
-import koaok, { App } from '../koaok'
+import hooh, { App } from '../hooh'
 import Redis from '../extend/redis'
 import { RedisOptions } from 'ioredis'
 
@@ -7,7 +7,7 @@ export { Redis, RedisOptions };
 
 
 export async function loadRedis(): Promise<void> {
-  const redisConfig = koaok.config<RedisOptions>('redis') || null
+  const redisConfig = hooh.config<RedisOptions>('redis') || null
   if (!redisConfig) {
     return
   }
@@ -18,6 +18,6 @@ export async function loadRedis(): Promise<void> {
   }
   const setting: RedisOptions = Object.assign({}, defaultConfig, redisConfig)
 
-  koaok.redis = new Redis(setting)
+  hooh.redis = new Redis(setting)
   
 }

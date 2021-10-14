@@ -1,6 +1,6 @@
 
 import { Context, Next } from 'koa'
-import { App } from './koaok'
+import { App } from './hooh'
 
 export interface ILogicOption {
   ctx: Context

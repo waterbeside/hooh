@@ -1,11 +1,11 @@
 import { Context, Next } from 'koa'
 import { loadController } from './controller'
-import koaok, { App, RouteConfigItem } from '../koaok'
+import hooh, { App, RouteConfigItem } from '../hooh'
 
 export async function loadRoutes(app: App): Promise<void> {
-  const ctrLoader = loadController(koaok.options.APP_CONTROLLER_PATH as string)
+  const ctrLoader = loadController(hooh.options.APP_CONTROLLER_PATH as string)
 
-  for (const routeItem of koaok.options.routes as RouteConfigItem[] ) {
+  for (const routeItem of hooh.options.routes as RouteConfigItem[] ) {
     const { match, method = 'get', controller, middlewares } = routeItem
     let fns: any[] = []
   
@@ -34,8 +34,8 @@ export async function loadRoutes(app: App): Promise<void> {
         await controllerInstance[controllerMethod](option)
       }
     })
-    if (koaok.router[method]) {
-      koaok.router[method](match, ...fns)
+    if (hooh.router[method]) {
+      hooh.router[method](match, ...fns)
     }
   }
 
@@ -53,8 +53,8 @@ export async function loadRoutes(app: App): Promise<void> {
     }
   })
 
-  app.use(koaok.router.routes())
-  app.use(koaok.router.allowedMethods({ 
+  app.use(hooh.router.routes())
+  app.use(hooh.router.allowedMethods({ 
     throw: true, // 抛出错误，代替设置响应头状态
     // notImplemented: () => '不支持当前请求所需要的功能',
     // methodNotAllowed: () => '不支持的请求方式'

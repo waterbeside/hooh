@@ -43,17 +43,17 @@ interface CreateAppOptions {
 
 declare module 'koa' {
   interface DefaultContext {
-    koaok: Koaok
+    hooh: Hooh
   }
 }
 
 
 export interface App extends Koa { 
-  koaok: Koaok
+  hooh: Hooh
 }
 
 
-export interface Koaok {
+export interface Hooh {
   app?: App
   _config: LoadConfigRes
   options: CreateAppOptions
@@ -93,7 +93,7 @@ function createControllerPath (appPath: string): string {
 }
 
 // Kook
-const koaok:Koaok = {
+const hooh:Hooh = {
   _config: {},
   Controller,
   Logic,
@@ -118,7 +118,7 @@ const koaok:Koaok = {
     }
     this.options = options
     const app = new Koa() as App
-    app.koaok = koaok
+    app.hooh = hooh
     app.use(bodyParser());
     if (this.options.middlewares && this.options.middlewares.length > 0) {
       this.options.middlewares.forEach((item) => {
@@ -145,4 +145,4 @@ const koaok:Koaok = {
 
 
 
-export default koaok
+export default hooh
