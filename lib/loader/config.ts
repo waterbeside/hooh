@@ -1,6 +1,6 @@
 import path from 'path'
 import koaok from '../koaok'
-
+import defaultConfig from '../config'
 export interface LoadConfigRes {
   [key: string]: any
 }
@@ -11,9 +11,9 @@ export default {
     const configPath = path.join(koaok.options.APP_PATH as string, 'config')
     try {
       const config = require(configPath).default
-      return {...config}
+      return {...defaultConfig, ...config}
     } catch (error) {
-      return {}
+      return {...defaultConfig}
     }
   },
 
