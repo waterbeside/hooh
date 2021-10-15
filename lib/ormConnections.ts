@@ -78,6 +78,7 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
     if (!connectionMap || Object.keys(connectionMap).length < 1) {
       const res = await createOrmConnections(hooh.config('orm') as OrmConnectionOptions[])
       if (!res || Object.keys(res).length < 1) {
+        throw new Error('Failed to create a connection')
       }
     }
     if (name) {
