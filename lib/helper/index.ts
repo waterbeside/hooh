@@ -16,10 +16,13 @@ export function sleep(time = 0){
 
 /**
  * md5
- * @param  {String} str [content]
+ * @param  {String | number | object} str [content]
  * @return {String}     [content md5]
  */
-export function md5(str: string): string {
+export function md5(str: string | number | object): string {
+  if (typeof str === 'object')  {
+    str = JSON.stringify(str)
+  }
   return crypto.createHash('md5').update(str + '', 'utf8').digest('hex')
 }
 
@@ -46,10 +49,10 @@ export function escapeHtml(str: string): string {
 /**
  * 给字符串替换参数
  * @param {String} templateStr 要被替换内容的字符串
- * @param {{[key: string]: string}} params 参数
+ * @param {{[key: string]: string | number}} params 参数
  * @param {{startTag? string, endTag?: string}} options 设置，用于设置替换内容的起始和结束标识符
  */
-export function replaceTemplateStr(templateStr: string, params: {[key: string]: string}, options: {
+export function replaceTemplateStr(templateStr: string, params: {[key: string]: string | number}, options: {
   startTag?: string
   endTag?: string
 } = {}): string {
@@ -68,7 +71,7 @@ export function replaceTemplateStr(templateStr: string, params: {[key: string]: 
     for (const param of matchParams as any) {
       const paramReg = new RegExp(`\\${opt.startTag}${param}\\${opt.endTag}`, 'g')
       const paramVal = isEmpty(params) ? '' : (params[param] || '')
-      returnStr = returnStr.replace(paramReg, paramVal)
+      returnStr = returnStr.replace(paramReg, paramVal + '')
     }
   }
   return returnStr
