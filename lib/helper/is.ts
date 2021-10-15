@@ -41,7 +41,7 @@ export function isEmpty(obj: any): boolean {
   if (isUndefined(obj) || isNull(obj) || obj === '') return true
   if (typeof obj === 'number' && isNaN(obj)) return true
   if ((typeof obj === 'string' || isArray(obj)) && obj.length === 0) return true
-  if (typeof obj === 'object' && obj !== null && Object.keys(obj).length === 0) true
+  if (typeof obj === 'object' && obj !== null && Object.keys(obj).length === 0) return true
   if (obj === false) return true
   return false
 }
