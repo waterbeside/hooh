@@ -1,8 +1,8 @@
 {
   "name": "hooh",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "",
-  "main": "lib/hooh.ts",
+  "main": "dist/hooh.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
