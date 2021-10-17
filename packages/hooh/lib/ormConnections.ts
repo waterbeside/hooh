@@ -32,6 +32,10 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
       return {}
     } else {
       const connsformatted = []
+      let createConns = createConnections
+      if (hooh.options?.createConnections && typeof hooh.options.createConnections === 'function') {
+        createConns =  hooh.options.createConnections
+      }
       for ( const item of conns ) {
 
         let entities = item?.entities || null
@@ -62,7 +66,7 @@ export async function createOrmConnections(config: OrmConnectionOptions[]): Prom
         }
         connsformatted.push(configItem)        
       }
-      const connections = await createConnections(connsformatted)
+      const connections = await createConns(connsformatted)
 
       
       for (const connection of connections) {

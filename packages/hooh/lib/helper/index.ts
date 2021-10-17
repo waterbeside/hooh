@@ -1,5 +1,21 @@
 import crypto from 'crypto'
-import { isEmpty } from './is'
+import { 
+  isArray,
+  isEmpty,
+  isNull,
+  isRegExp,
+  isUndefined,
+  objToString
+} from './is'
+
+export {
+  isArray,
+  isEmpty,
+  isNull,
+  isRegExp,
+  isUndefined,
+  objToString
+}
 
 /**
  * 异步延迟

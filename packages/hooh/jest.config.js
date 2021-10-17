@@ -1,7 +1,7 @@
 module.exports = {
   // rootDir: 'lib',
   roots: [
-      '<rootDir>/test'
+      '<rootDir>/__test__'
   ],
   testRegex: 'test/(.+)\\.test\\.(jsx?|tsx?)$',
   transform: {

@@ -14,6 +14,7 @@ import { getConnection, createOrmConnections, OrmConnectionOptions } from './orm
 import { Context } from 'koa'
 import * as helper from './helper'
 import * as decorators from './decorators'
+import * as typeorm from 'typeorm'
 
 export { 
   Controller,
@@ -23,7 +24,8 @@ export {
   OrmConnectionOptions as  ConnectionOptions,
   createOrmConnections as createConnections,
   helper,
-  decorators
+  decorators,
+  typeorm
 }
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
@@ -132,6 +134,12 @@ const hooh:Hooh = {
     this._config = configLoader.loadConfig()
     loadExtends(app)
     loadRedis()
+    // 加载db
+    const ormConfig = hooh.config('orm') || hooh.config('ormconfig')
+    if (!helper.isEmpty(ormConfig)) {
+      createOrmConnections(ormConfig as OrmConnectionOptions[])
+    }
+
     // 加载路由（加载路由时会自动加载控制器）
     loadRoutes(app)
     
