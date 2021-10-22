@@ -1,3 +1,5 @@
 {
-  "private": true
+  "private": true,
+  "author": "Natron Kan",
+  "license": "MIT"
 }
