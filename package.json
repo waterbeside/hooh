@@ -1,5 +1,11 @@
 {
   "private": true,
   "author": "Natron Kan",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --fix ./packages"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0"
+  }
 }

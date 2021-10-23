@@ -1,13 +1,16 @@
 {
   "name": "create-hooh",
   "version": "0.1.0",
-  "description": "Create hooh",
+  "description": "Create HOOH",
   "main": "index.js",
   "keywords": [
     "hooh"
   ],
   "author": "Natron Kan",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint --fix ."
+  },
   "bin": {
     "create-hooh": "./index.js"
   },
@@ -19,5 +22,8 @@
     "glob": "^7.2.0",
     "inquirer": "^8.2.0",
     "metalsmith": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.1.0"
   }
 }
