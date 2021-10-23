@@ -37,10 +37,11 @@ export interface RouteConfigItem {
   middlewares?: Koa.Middleware[]
 }
 
+export type RouteConfig = RouteConfigItem[]
 interface CreateAppOptions {
   APP_PATH?: string
   APP_CONTROLLER_PATH?: string
-  routes?: RouteConfigItem[]
+  routes?: RouteConfig
   middlewares?: Koa.Middleware[]
   [key:string]: any
 }

@@ -1,18 +1,18 @@
 const inquirer = require('inquirer')
 
 const defaultPrompts = {
-  "name": {
-    "type": "string",
-    "message": "Project name"
+  'name': {
+    'type': 'string',
+    'message': 'Project name'
   },
-  "description": {
-    "type": "string",
-    "message": "Project description",
-    "default": "application created by HOOH"
+  'description': {
+    'type': 'string',
+    'message': 'Project description',
+    'default': 'application created by HOOH'
   },
-  "author": {
-    "type": "string",
-    "message": "Author"
+  'author': {
+    'type': 'string',
+    'message': 'Author'
   },
 }
 
@@ -29,15 +29,15 @@ module.exports = function(options) {
     inquirer
       .prompt(prompts)
       .then(saveAnswersToMetadata(metadata, options, done))
-  };
-};
+  }
+}
 
 function saveAnswersToMetadata(metadata, options, done) {
   return answers => {
     for (var key in answers) {
-      metadata[key] = answers[key];
+      metadata[key] = answers[key]
     }
-    done();
-  };
+    done()
+  }
 }
 

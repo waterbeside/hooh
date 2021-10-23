@@ -9,16 +9,16 @@ const template = require('./template')
 function getLocalTemplatePath(templatePath) {
   return path.isAbsolute(templatePath)
     ? templatePath
-    : path.normalize(path.join(process.cwd(), templatePath));
+    : path.normalize(path.join(process.cwd(), templatePath))
 }
 
 function isExist(dir) {
   dir = path.normalize(dir)
   try {
     fs.accessSync(dir, fs.R_OK)
-    return true;
+    return true
   } catch (e) {
-    return false;
+    return false
   }
 }
 
@@ -29,11 +29,10 @@ function isExist(dir) {
  * @returns {Promise}
  */
 exports.syncTemp = function(templatePath, cacheTemplatePath) {
-  const template = getLocalTemplatePath(templatePath);
+  const template = getLocalTemplatePath(templatePath)
     if (!isExist(template)) {
-      console.log();
-      logger.error('The template is a local template, but it does not exist. The template path is "%s".', template);
-      return;
+      console.log('The template is a local template, but it does not exist. The template path is "%s".', template)
+      return
     }
 
     return new Promise(resolve => {
@@ -41,14 +40,13 @@ exports.syncTemp = function(templatePath, cacheTemplatePath) {
         .clean(true)
         .source('.')
         .destination(cacheTemplatePath)
-        .build((err, files) => {
+        .build((err) => {
           if (err) {
-            console.log();
-            logger.error('Local template synchronization failed, reason: "%s".', err.message.trim());
+            console.log('Local template synchronization failed, reason: "%s".', err.message.trim())
           }
-          resolve(cacheTemplatePath);
-        });
-    });
+          resolve(cacheTemplatePath)
+        })
+    })
 }
 
 /**
@@ -60,7 +58,7 @@ exports.syncTemp = function(templatePath, cacheTemplatePath) {
  */
 exports.generate = function (cacheTemplatePath, targetPath, options) {
   console.log('run generate : cacheTemplatePath: ', cacheTemplatePath)
-  const metalsmith = Metalsmith(cacheTemplatePath);
+  const metalsmith = Metalsmith(cacheTemplatePath)
   options.source = cacheTemplatePath
   return new Promise(resolve => {
     metalsmith
@@ -69,13 +67,12 @@ exports.generate = function (cacheTemplatePath, targetPath, options) {
       .clean(true)
       .source('.')
       .destination(targetPath)
-      .build((err, files) => {
+      .build((err) => {
         if (err) {
-          console.log();
-          console.error('Local template synchronization failed, reason: "%s".', err.message.trim());
+          console.error('Local template synchronization failed, reason: "%s".', err.message.trim())
         }
-        resolve(targetPath);
-      });
-  });
+        resolve(targetPath)
+      })
+  })
 }
 

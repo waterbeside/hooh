@@ -20,8 +20,8 @@ function setFileContent(fn) {
     return fn(str, filePath)
       .then(res => {
         file.contents = Buffer.from(res)
-      });
-  };
+      })
+  }
 }
 
 function compile(source, metaData, render) {

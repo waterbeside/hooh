@@ -1,4 +1,4 @@
-import hooh, { App } from '../hooh'
+import hooh from '../hooh'
 import Redis from '../extend/redis'
 import { RedisOptions } from 'ioredis'
 
