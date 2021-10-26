@@ -5,8 +5,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./src/index.ts",
+    "prod": "export NODE_ENV=production &&  ./app/index.js",
+    "build": "rm -r ./app && tsc"
   },
   "author": "",
   "license": "ISC",
