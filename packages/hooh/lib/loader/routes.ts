@@ -39,11 +39,12 @@ export async function loadRoutes(app: App): Promise<void> {
     }
   }
 
+  // SET 404 OR 500
   app.use(async (ctx, next)=>{
     try{
         await next()
         if(!ctx.body){  // 没有资源
-          // ctx.body = "404"
+          ctx.body = '404'
           ctx.status = 404
         }
     }catch(e){
@@ -53,6 +54,31 @@ export async function loadRoutes(app: App): Promise<void> {
     }
   })
 
+  // AUTO ROUTER
+  app.use(async (ctx, next) => {
+      await next()
+      if(!ctx.body){  // 如果body没返回（没匹配到自定义路由，则自动查找路由）
+        const url = ctx.url.split('?')[0].toLowerCase()
+        const actions = url.split('/').slice(1)
+        const pathClassName = actions.slice(0, -1).join('.')
+        const controllerMethod = actions[actions.length - 1] || 'index'
+        let controllerClass
+        try {
+          controllerClass = ctrLoader.getClass(pathClassName)
+        } catch (error) {
+          return
+        }
+        const option = {
+          ctx,
+          next,
+          app
+        }
+        const controllerInstance = new controllerClass(option)
+        if (controllerInstance && controllerInstance[controllerMethod]) {
+          await controllerInstance[controllerMethod](option)
+        }
+      }
+  })
   app.use(hooh.router.routes())
   app.use(hooh.router.allowedMethods({ 
     throw: true, // 抛出错误，代替设置响应头状态
