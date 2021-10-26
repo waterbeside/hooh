@@ -4,8 +4,6 @@ import { RedisOptions } from 'ioredis'
 
 export { Redis, RedisOptions }
 
-
-
 export async function loadRedis(): Promise<void> {
   const redisConfig = hooh.config<RedisOptions>('redis') || null
   if (!redisConfig) {
