@@ -1,3 +1,5 @@
 export default {
-  lockedErrorCode: -1
+  lockedErrorCode: -1, // 被锁时返回的error code
+  useAutoRouter: false,  // 是使使用自动路由
+
 }
