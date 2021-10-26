@@ -1,12 +1,11 @@
 import path from 'path'
-import dotenv from 'dotenv'
-import fs from 'fs'
 import Koa from 'koa'
 import Controller from './controller'
 import Logic from './logic'
 import configLoader, { LoadConfigRes } from './loader/config'
 import { loadRoutes } from './loader/routes'
 import { loadExtends } from './loader/extends'
+import { loadEnv } from './loader/env'
 import { Redis, loadRedis } from './loader/redis'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
@@ -62,6 +61,7 @@ export interface Hooh {
   app?: App
   _config: LoadConfigRes
   options: CreateAppOptions
+  env: typeof process.env
   createApp: (opt: CreateAppOptions) => App
   config: <T>(name: string) => T | undefined
   Controller: typeof Controller
@@ -69,25 +69,6 @@ export interface Hooh {
   redis: Redis
   controller?: Controller
   router: Router
-}
-
-
-
-
-
-// .env环境变量读取
-const nodeEnv = process.env.NODE_ENV ?  process.env.NODE_ENV.trim() : 'production'
-process.env.NODE_ENV = nodeEnv
-// const isDev = nodeEnv === 'development'
-
-dotenv.config({ path: path.join(process.cwd(), '.env') })
-try {
-  const envConfig = dotenv.parse(fs.readFileSync(path.join(process.cwd(), `.env.${nodeEnv}.local`)))
-  for (const k in envConfig) {
-    process.env[k] = envConfig[k]
-  }
-} catch (error: any) {
-  console.log(error.message)
 }
 
 
@@ -102,6 +83,7 @@ const hooh:Hooh = {
   _config: {},
   Controller,
   Logic,
+  env: loadEnv(),
   router,
   redis: {} as Redis,
   options:(()=>{
