@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/hooh.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "rm -r ./dist && tsc",
+    "dev": "rm -r ./dist && tsc -w",
     "lint": "eslint --fix .",
     "test": "jest"
   },
