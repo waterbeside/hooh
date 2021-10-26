@@ -42,6 +42,7 @@ interface CreateAppOptions {
   APP_CONTROLLER_PATH?: string
   routes?: RouteConfig
   middlewares?: Koa.Middleware[]
+  env?: string
   [key:string]: any
 }
 
@@ -62,13 +63,14 @@ export interface Hooh {
   _config: LoadConfigRes
   options: CreateAppOptions
   env: typeof process.env
-  createApp: (opt: CreateAppOptions) => App
+  createApp: (opt: CreateAppOptions) => Hooh
   config: <T>(name: string) => T | undefined
   Controller: typeof Controller
   Logic: typeof Logic
   redis: Redis
   controller?: Controller
   router: Router
+  start: (port?: null | number | string)=>Hooh
 }
 
 
@@ -96,7 +98,7 @@ const hooh:Hooh = {
   })(),
   createApp: function(opt:CreateAppOptions) {
 
-    if (this.app) return this.app
+    if (this.app) return this
     const options = {
       ...this.options, ...opt
     }
@@ -127,10 +129,22 @@ const hooh:Hooh = {
     loadRoutes(app)
     
     this.app = app
-    return this.app
+    return this
   },
+
   config: function<T = any>(name: string): T | undefined {
     return configLoader.getConfig<T>(name, this._config)
+  },
+
+  start: function(port: null | number | string = null) {
+    if (!this.app) {
+      throw new Error('Please first createApp')
+    }
+    port = port || this.config('port') || this.env.HOOH_APP_PORT || 8080
+    this.app?.listen(port, ()=>{
+      console.log(`Application started，http://localhost:${port}`)
+    })
+    return this
   }
 }
 

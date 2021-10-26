@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
 import path from 'path'
 import fs from 'fs'
+import hooh from '../hooh'
 
 export function loadEnv(): typeof process.env {
-  const nodeEnv = process.env.NODE_ENV ?  process.env.NODE_ENV.trim() : 'production'
+  const nodeEnv = hooh.options.env || (process.env.NODE_ENV ?  process.env.NODE_ENV.trim() : 'production')
   process.env.NODE_ENV = nodeEnv
 
   dotenv.config({ path: path.join(process.cwd(), '.env') })
@@ -13,7 +14,7 @@ export function loadEnv(): typeof process.env {
       process.env[k] = envConfig[k]
     }
   } catch (error: any) {
-    console.log(error.message)
+    // PASS
   }
   return process.env
 }
