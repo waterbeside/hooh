@@ -1,6 +1,7 @@
 import { Middleware } from 'koa'
 import path from 'path'
 import hooh, { App } from '../hooh'
+import useNunjucks from '../extend/useNunjucks'
 import contextExtends from '../extend/context'
 
 export async function loadExtends(app: App): Promise<void> {
@@ -18,6 +19,7 @@ export async function loadExtends(app: App): Promise<void> {
     // PASS
   }
   const extendsList = [
+    useNunjucks(),
     ...contextExtends,
     ...customerExtends
   ]
