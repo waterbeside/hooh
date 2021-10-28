@@ -1,6 +1,6 @@
 {
   "watch": ["lib", "typings", "example", "node_modules/hooh/dist"],
-  "ext": "ts, js, json",
+  "ext": "ts, js, json, html",
   "env": {
     "NODE_ENV": "development"
   },
