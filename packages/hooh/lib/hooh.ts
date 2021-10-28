@@ -10,7 +10,7 @@ import { Redis, loadRedis } from './loader/redis'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import { getConnection, createOrmConnections, OrmConnectionOptions } from './ormConnections'
-import { Context } from 'koa'
+import { Context, Next } from 'koa'
 import * as helper from './helper'
 import * as decorators from './decorators'
 import * as typeorm from 'typeorm'
@@ -18,6 +18,7 @@ import * as typeorm from 'typeorm'
 export { 
   Controller,
   Context,
+  Next,
   Logic,
   getConnection,
   OrmConnectionOptions as  ConnectionOptions,
@@ -85,7 +86,7 @@ const hooh:Hooh = {
   _config: {},
   Controller,
   Logic,
-  env: loadEnv(),
+  env: {},
   router,
   redis: {} as Redis,
   options:(()=>{
@@ -106,6 +107,7 @@ const hooh:Hooh = {
       options.APP_CONTROLLER_PATH = createControllerPath(options.APP_PATH as string)
     }
     this.options = options
+    this.env = loadEnv()
     const app = new Koa() as App
     app.hooh = hooh
     app.use(bodyParser())
