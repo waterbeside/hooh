@@ -6,9 +6,9 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./src/app.ts",
-    "prod": "export NODE_ENV=production &&  ./app/app.js",
-    "build": "rm -r ./app && tsc"
+    "dev": "nodemon ./src/app.ts",
+    "prod": "export NODE_ENV=production && node ./app/app.js",
+    "build": "rm -rf ./app && tsc"
   },
   "license": "ISC",
   "dependencies": {
