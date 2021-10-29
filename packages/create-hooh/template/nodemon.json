@@ -1,0 +1,11 @@
+{
+  "watch": ["src", "typings"],
+  "ext": "ts, js, json, html",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "execMap": {
+    "ts": "ts-node",
+    "js": "node"
+  }
+}

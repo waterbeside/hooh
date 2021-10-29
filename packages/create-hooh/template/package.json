@@ -6,7 +6,18 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./src/app.ts",
+    "prod": "export NODE_ENV=production &&  ./app/app.js",
+    "build": "rm -r ./app && tsc"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "hooh": "^0.2.2",
+    "typeorm": "^0.2.38",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14",
+    "ts-node": "^10.4.0"
+  }
 }
