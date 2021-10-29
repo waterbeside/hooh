@@ -26,7 +26,7 @@ export function lock(lockKey: string, lockOption: LockOptions | null = null) {
     statusCode: 500
   }
   const opt = {...defaultOpt, ...lockOption}
-  // console.log(hooh.app?.context)
+  
   return function(target: any, key: string, descriptor: PropertyDescriptor) {
     const _value = descriptor.value
     if (typeof _value === 'function') {

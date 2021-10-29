@@ -1,6 +1,6 @@
 import path from 'path'
 import hooh from './hooh'
-import { createConnections, Connection, ConnectionOptions } from 'typeorm'
+import { Connection, ConnectionOptions } from 'typeorm'
 
 
 export type OrmConnectionOptions =  ConnectionOptions & {
@@ -27,69 +27,70 @@ export function formatExt(entiry: any): any {
 const connectionMap: IConnectionMap = {}
 
 export async function createOrmConnections(config: OrmConnectionOptions[]): Promise<any> {
-    const conns = config && config instanceof Array && config.length > 0 ? config : null
-    if (!conns) { 
-      return {}
-    } else {
-      const connsformatted = []
-      let createConns = createConnections
-      if (hooh.options?.createConnections && typeof hooh.options.createConnections === 'function') {
-        createConns =  hooh.options.createConnections
-      }
-      for ( const item of conns ) {
+  const conns = config && config instanceof Array && config.length > 0 ? config : null
+  if (!conns) { 
+    return {}
+  } else {
+    const connsformatted = []
+    const createConns = hooh.orm.createConnections
 
-        let entities = item?.entities || null
-        const entitiesPath = item?.entitiesPath || null
-        if (!entities) {
-          if  (entitiesPath) {
-            entities = entitiesPath.map((pathItem: any) => {
-              return formatExt(path.join(hooh.options.APP_PATH as string, pathItem, '*'))
-            })
-          } else {
-            continue
-          }
+    for ( const item of conns ) {
+
+      let entities = item?.entities || null
+      const entitiesPath = item?.entitiesPath || null
+      if (!entities) {
+        if  (entitiesPath) {
+          entities = entitiesPath.map((pathItem: any) => {
+            return formatExt(path.join(hooh.options.APP_PATH as string, pathItem, '*'))
+          })
         } else {
-          entities = entities.map((entity) => formatExt(entity))
+          continue
         }
-        const configItem = {
-          ...item,
-          name: item.name || 'default',
-          synchronize: item.synchronize || false,
-          logging: item.logging || false,
-          entities
-        }
-        if (item.migrations) {
-          configItem.migrations = item.migrations.map((item) => formatExt(item))
-        }
-        if (item.subscribers) {
-          configItem.subscribers = item.subscribers.map((item) => formatExt(item))
-        }
-        connsformatted.push(configItem)        
+      } else {
+        entities = entities.map((entity) => formatExt(entity))
       }
-      const connections = await createConns(connsformatted)
-
-      
-      for (const connection of connections) {
-        connectionMap[connection.name] = connection
+      const configItem = {
+        ...item,
+        name: item.name || 'default',
+        synchronize: item.synchronize || false,
+        logging: item.logging || false,
+        entities
       }
-      return connectionMap
+      if (item.migrations) {
+        configItem.migrations = item.migrations.map((item) => formatExt(item))
+      }
+      if (item.subscribers) {
+        configItem.subscribers = item.subscribers.map((item) => formatExt(item))
+      }
+      connsformatted.push(configItem)        
     }
-}
+    const connections = await createConns(connsformatted)
 
-  export async function getConnection(): Promise<IConnectionMap>
-  export async function getConnection(name: string): Promise<Connection>
-  export  async function getConnection(name: string|undefined = undefined): Promise<IConnectionMap | Connection> {
-    if (!connectionMap || Object.keys(connectionMap).length < 1) {
-      const res = await createOrmConnections(hooh.config('orm') as OrmConnectionOptions[])
-      if (!res || Object.keys(res).length < 1) {
-        throw new Error('Failed to create a connection')
-      }
-    }
-    if (name) {
-      if (typeof connectionMap[name] === 'undefined') {
-        throw new Error(`No ${name} connection`)
-      }
-      return connectionMap[name]
+    
+    for (const connection of connections) {
+      connectionMap[connection.name] = connection
     }
     return connectionMap
   }
+}
+
+export async function getConnection(): Promise<IConnectionMap>
+export async function getConnection(name: string): Promise<Connection>
+export  async function getConnection(name: string|undefined = undefined): Promise<IConnectionMap | Connection> {
+  if (!connectionMap || Object.keys(connectionMap).length < 1) {
+    const res = await createOrmConnections(hooh.config('orm') as OrmConnectionOptions[])
+    if (!res || Object.keys(res).length < 1) {
+      throw new Error('Failed to create a connection')
+    }
+  }
+  if (name) {
+    if (typeof connectionMap[name] === 'undefined') {
+      throw new Error(`No ${name} connection`)
+    }
+    return connectionMap[name]
+  }
+  return connectionMap
+}
+
+
+// export async function getRepository()

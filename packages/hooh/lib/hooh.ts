@@ -13,20 +13,7 @@ import { getConnection, createOrmConnections, OrmConnectionOptions } from './orm
 import { Context, Next } from 'koa'
 import * as helper from './helper'
 import * as decorators from './decorators'
-import * as typeorm from 'typeorm'
-
-export { 
-  Controller,
-  Context,
-  Next,
-  Logic,
-  getConnection,
-  OrmConnectionOptions as  ConnectionOptions,
-  createOrmConnections as createConnections,
-  helper,
-  decorators,
-  typeorm
-}
+import * as oTypeorm from 'typeorm'
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
 
@@ -72,6 +59,8 @@ export interface Hooh {
   controller?: Controller
   router: Router
   start: (port?: null | number | string)=>Hooh
+  orm: typeof oTypeorm
+  setOrm: (orm: typeof oTypeorm) => Hooh
 }
 
 
@@ -81,7 +70,8 @@ function createControllerPath (appPath: string): string {
   return path.join(appPath, 'controller')
 }
 
-// Kook
+let isOrmSet = false
+
 const hooh:Hooh = {
   _config: {},
   Controller,
@@ -89,6 +79,7 @@ const hooh:Hooh = {
   env: {},
   router,
   redis: {} as Redis,
+  orm: oTypeorm,
   options:(()=>{
     const appPath = path.join(process.cwd(), 'src')
     const appControllerPath = createControllerPath(appPath)
@@ -121,6 +112,7 @@ const hooh:Hooh = {
     this._config = configLoader.loadConfig()
     loadExtends(app)
     loadRedis()
+
     // 加载db
     const ormConfig = hooh.config('orm') || hooh.config('ormconfig')
     if (!helper.isEmpty(ormConfig)) {
@@ -138,6 +130,15 @@ const hooh:Hooh = {
     return configLoader.getConfig<T>(name, this._config)
   },
 
+  setOrm: function(orm) {
+    if (isOrmSet) {
+      throw new Error('Please do not set orm repeatedly!')
+    }
+    this.orm = orm
+    isOrmSet = true
+    return this
+  },
+
   start: function(port: null | number | string = null) {
     if (!this.app) {
       throw new Error('Please first createApp')
@@ -151,3 +152,16 @@ const hooh:Hooh = {
 }
 
 export default hooh
+
+
+export { 
+  Controller,
+  Context,
+  Next,
+  Logic,
+  getConnection,
+  OrmConnectionOptions as  ConnectionOptions,
+  createOrmConnections as createConnections,
+  helper,
+  decorators
+}

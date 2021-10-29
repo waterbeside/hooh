@@ -40,10 +40,11 @@ const setApiReturn = async function(ctx: Context, next: Next): Promise<void> {
    * @param  any $data    [主要数据]
    * @param  any  $extra   [其它]
    */
-  ctx.apiReturn =  function (code: Code, message: any = '', data: any = null, extra: any = null) {
-    if (typeof message === 'object') {
-      data = message
-      message = null
+  ctx.apiReturn =  function (code: Code, msgOrData: any = '', data: any = null, extra: any = null) {
+    let message = msgOrData
+    if (typeof msgOrData === 'object') {
+      data = msgOrData
+      message = ''
     }
     data = data || null
     extra = extra || null
