@@ -1,6 +1,6 @@
 
 import { Context, Next } from 'koa'
-import { App } from './hooh'
+import hooh, { App } from './hooh'
 
 export interface ILogicOption {
   ctx: Context
@@ -18,6 +18,8 @@ class BaseLogic {
   ctx: Context
   next: Next
   app: App
+  orm = hooh.orm
+  redis = hooh.redis
 
   constructor(option: ILogicOption) {
     this.ctx = option.ctx
