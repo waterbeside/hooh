@@ -12,7 +12,7 @@ export const loadController = function(controllerPath: string): IControllerLoade
   const isTsRun = process.env.TS_RUN ? process.env.TS_RUN.trim()  === '1' : false
   const files = glob.sync(`${controllerPath}/**/*.${isTsRun ? 'ts' : 'js'}`)
   files.forEach(filepath => {
-    let pathClassName = filepath.replace(controllerPath, '')
+    let pathClassName = filepath.replace(controllerPath, '').toLowerCase()
     pathClassName = pathClassName.substring(1, pathClassName.length - 3)
     pathClassName = pathClassName.replace(/[/|\\]/g, '.')
 
