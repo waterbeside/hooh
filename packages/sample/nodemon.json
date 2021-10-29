@@ -1,5 +1,5 @@
 {
-  "watch": ["lib", "typings", "example", "node_modules/hooh/dist"],
+  "watch": ["src", "typings"],
   "ext": "ts, js, json, html",
   "env": {
     "NODE_ENV": "development"

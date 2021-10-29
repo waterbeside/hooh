@@ -3,5 +3,6 @@ import redis from './redis'
 
 export default {
     ormconfig,
-    redis
+    redis,
+    useAutoRouter: true
 }

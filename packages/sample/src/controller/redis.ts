@@ -1,17 +1,17 @@
 
-import hooh, { Controller, helper } from 'hooh'
+import { Controller, helper } from 'hooh'
 import { lock } from 'hooh/lib/decorators'
 const { sleep } = helper
 
-class Home extends Controller {
+class Redis extends Controller {
   async index(): Promise<any> {
     // redis get
-    await hooh.redis.set('hooh:testGet', 'test get data')
-    const getRes = await hooh.redis.get('hooh:testGet')
+    await this.redis.set('hooh:testGet', 'test get data')
+    const getRes = await this.redis.get('hooh:testGet')
 
     // extra method: cache
-    await hooh.redis.cache('hooh:testCache', {key: '123'}, 100)
-    const cacheRes = await hooh.redis.cache('hooh:testCache')
+    await this.redis.cache('hooh:testCache', {key: '123'}, 100)
+    const cacheRes = await this.redis.cache('hooh:testCache')
 
     const returnData = {
       getRes,
@@ -28,4 +28,4 @@ class Home extends Controller {
   }
 }
 
-export default Home
+export default Redis
