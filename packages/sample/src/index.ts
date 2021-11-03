@@ -1,5 +1,5 @@
 import hooh from 'hooh'
-import routes from './routers'
+import routes from './routes'
 import * as typeorm from 'typeorm'
 
 hooh.setOrm(typeorm).createApp({
