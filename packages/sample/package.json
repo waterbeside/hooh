@@ -5,12 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=development && export TS_RUN=1 && nodemon --files ./src/index.ts"
+    "dev": "nodemon ./src/index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hooh": "workspace:^0.2.2",
+    "hooh": "workspace:^0.3.0",
     "typeorm": "^0.2.38",
     "typescript": "^4.4.4"
   },

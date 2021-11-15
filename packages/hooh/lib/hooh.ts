@@ -4,6 +4,7 @@ import Controller from './controller'
 import Logic from './logic'
 import configLoader, { LoadConfigRes } from './loader/config'
 import { loadRoutes } from './loader/routes'
+import { loadSchedule } from './loader/schedule'
 import { loadExtends } from './loader/extends'
 import { loadEnv } from './loader/env'
 import { Redis, loadRedis } from './loader/redis'
@@ -14,6 +15,7 @@ import { Context, Next } from 'koa'
 import * as helper from './helper'
 import * as decorators from './decorators'
 import * as oTypeorm from 'typeorm'
+import schedule from 'node-schedule'
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
 
@@ -24,10 +26,20 @@ export interface RouteConfigItem {
   middlewares?: Koa.Middleware[]
 }
 
+export interface ScheduleConfigItem {
+  enable: boolean
+  cron: string
+  handle: string
+  immediate?: boolean
+}
+
 export type RouteConfig = RouteConfigItem[]
+export type ScheduleConfig = ScheduleConfigItem[]
+
 interface CreateAppOptions {
   APP_PATH?: string
   APP_CONTROLLER_PATH?: string
+  APP_SCHEDULE_PATH?: string
   routes?: RouteConfig
   middlewares?: Koa.Middleware[]
   env?: string
@@ -61,6 +73,10 @@ export interface Hooh {
   start: (port?: null | number | string)=>Hooh
   orm: typeof oTypeorm
   setOrm: (orm: typeof oTypeorm) => Hooh
+  scheduleStart: () => Hooh
+  scheduleJobs: {
+    [props:string]: schedule.Job
+  }
 }
 
 
@@ -68,6 +84,10 @@ export const router = new Router
 
 function createControllerPath (appPath: string): string {
   return path.join(appPath, 'controller')
+}
+
+function createSchedulePath (appPath: string): string {
+  return path.join(appPath, 'scheduler')
 }
 
 let isOrmSet = false
@@ -83,9 +103,11 @@ const hooh:Hooh = {
   options:(()=>{
     const appPath = path.join(process.cwd(), 'src')
     const appControllerPath = createControllerPath(appPath)
+    const appSchedulePath = createSchedulePath(appPath)
     return {
       APP_PATH: appPath,
-      APP_CONTROLLER_PATH: appControllerPath
+      APP_CONTROLLER_PATH: appControllerPath,
+      APP_SCHEDULE_PATH: appSchedulePath
     }
   })(),
   createApp: function(opt:CreateAppOptions) {
@@ -96,6 +118,9 @@ const hooh:Hooh = {
     }
     if (!opt.APP_CONTROLLER_PATH) {
       options.APP_CONTROLLER_PATH = createControllerPath(options.APP_PATH as string)
+    }
+    if (!opt.APP_SCHEDULE_PATH) {
+      options.APP_SCHEDULE_PATH = createSchedulePath(options.APP_PATH as string)
     }
     this.options = options
     this.env = loadEnv()
@@ -121,7 +146,6 @@ const hooh:Hooh = {
 
     // 加载路由（加载路由时会自动加载控制器）
     loadRoutes(app)
-    
     this.app = app
     return this
   },
@@ -138,10 +162,20 @@ const hooh:Hooh = {
     isOrmSet = true
     return this
   },
+  scheduleJobs: {},
+  scheduleStart: function() {
+    if (!this.app) {
+      throw new Error('Please createApp first') 
+    }
+    const {jobs, run} = loadSchedule(this.app)
+    this.scheduleJobs = jobs
+    run()
+    return this
+  },
 
   start: function(port: null | number | string = null) {
     if (!this.app) {
-      throw new Error('Please first createApp')
+      throw new Error('Please createApp first')
     }
     port = port || this.config('port') || this.env.HOOH_APP_PORT || 8080
     this.app?.listen(port, ()=>{
