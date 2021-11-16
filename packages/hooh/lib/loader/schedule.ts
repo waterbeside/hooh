@@ -14,7 +14,6 @@ interface LoadScheduleReturn {
 export function loadSchedule(app: App): LoadScheduleReturn {
   const ctrLoader = loadController(hooh.options.APP_SCHEDULE_PATH as string)
   const schedules = hooh.config<ScheduleConfigItem[]>('schedules') || []
-  console.log(schedules)
   const jobs: Jobs = {}
   return {
     jobs,
