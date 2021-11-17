@@ -59,9 +59,9 @@ export async function loadRoutes(app: App): Promise<void> {
     app.use(async (ctx, next) => {
       await next()
       if(!ctx.body){  // 如果body没返回（没匹配到自定义路由，则自动查找路由）
-        const url = ctx.url.split('?')[0].toLowerCase()
+        const url = ctx.url.split('?')[0]
         const actions = url.split('/').slice(1)
-        const pathClassName = actions.slice(0, -1).join('.')
+        const pathClassName = actions.slice(0, -1).join('.').toLowerCase()
         const controllerMethod = actions[actions.length - 1] || 'index'
         let controllerClass
         try {
