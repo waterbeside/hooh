@@ -15,11 +15,19 @@ export function loadSchedule(app: App): LoadScheduleReturn {
   const ctrLoader = loadController(hooh.options.APP_SCHEDULE_PATH as string)
   const schedules = hooh.config<ScheduleConfigItem[]>('schedules') || []
   const jobs: Jobs = {}
+  const appInstance = Number(process.env.NODE_APP_INSTANCE || 0)
   return {
     jobs,
     run: () => {
       for (const scheduleItem of schedules) {
         if (!scheduleItem?.enable) {
+          continue
+        }
+        // TODO: 判定在哪个线程中执行，防止PM2多线程下重复执行
+        const scheduleAppInstance = scheduleItem?.appInstance || 0
+        if (Array.isArray(scheduleAppInstance) && scheduleAppInstance.length > 0 && !scheduleAppInstance.includes(appInstance)) {
+          continue
+        } else if (typeof scheduleAppInstance === 'number' && scheduleAppInstance !== appInstance) {
           continue
         }
         const controller = scheduleItem.handle

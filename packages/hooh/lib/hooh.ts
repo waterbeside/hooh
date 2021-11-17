@@ -31,6 +31,7 @@ export interface ScheduleConfigItem {
   cron: string
   handle: string
   immediate?: boolean
+  appInstance?: number[] | number
 }
 
 export type RouteConfig = RouteConfigItem[]
@@ -168,8 +169,10 @@ const hooh:Hooh = {
       throw new Error('Please createApp first') 
     }
     const {jobs, run} = loadSchedule(this.app)
-    this.scheduleJobs = jobs
-    run()
+    setTimeout(()=>{
+      this.scheduleJobs = jobs
+      run()
+    }, 500)
     return this
   },
 
