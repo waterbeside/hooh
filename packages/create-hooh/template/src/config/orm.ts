@@ -13,4 +13,5 @@ export default <ConnectionOptions[]>[{
   password: '',
   database: 'default',
   entitiesPath: ['entity/'], //
+  // timezone: '+8',
 }]
