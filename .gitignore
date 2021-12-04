@@ -2,6 +2,6 @@ node_modules
 .DS_Store
 dist
 *.local
-
+logs
 .vscode
 .pnpm-debug.log
