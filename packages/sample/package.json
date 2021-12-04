@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hooh": "workspace:^0.3.0",
+    "hooh": "workspace:^0.4.0",
     "typeorm": "^0.2.38",
     "typescript": "^4.4.4"
   },

@@ -15,9 +15,9 @@ import { ScheduleConfigItem } from 'hooh'
 
 const schedules:ScheduleConfigItem[] = [
   {
-    enable: true,
+    enable: false,
     cron: '*/10 * * * * *',
-    handle: 'cron.index',
+    handle: 'testCron.index',
     immediate: false
   }
 ]
