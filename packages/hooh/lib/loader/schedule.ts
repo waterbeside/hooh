@@ -23,7 +23,7 @@ export function loadSchedule(app: App): LoadScheduleReturn {
         if (!scheduleItem?.enable) {
           continue
         }
-        // TODO: 判定在哪个线程中执行，防止PM2多线程下重复执行
+        // Prevent repeated execution under PM2 multithreading
         const scheduleAppInstance = scheduleItem?.appInstance || 0
         if (Array.isArray(scheduleAppInstance) && scheduleAppInstance.length > 0 && !scheduleAppInstance.includes(appInstance)) {
           continue
