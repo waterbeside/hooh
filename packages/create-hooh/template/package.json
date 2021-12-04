@@ -8,11 +8,11 @@
   "scripts": {
     "dev": "nodemon ./src/app.ts",
     "prod": "export NODE_ENV=production && node ./app/app.js",
-    "build": "rm -rf ./app && tsc"
+    "build": "tsc --build --clean && tsc"
   },
   "license": "ISC",
   "dependencies": {
-    "hooh": "^0.2.2",
+    "hooh": "^0.4.0",
     "typeorm": "^0.2.38",
     "typescript": "^4.4.4"
   },
