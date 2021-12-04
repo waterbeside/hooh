@@ -7,6 +7,19 @@ export default {
     nunjucksConfig: {
       autoescape: true
     }
+  },
+  logger: {  // log4js 配置
+    appenders: {  
+      datafileout: {
+          type: 'dateFile', 
+          filename: 'logs/datafileout.log', 
+          pattern: '.yyyy-MM-dd'
+      },
+      consoleout: { type: 'console' }, 
+    }, 
+    categories: {    
+        default: { appenders: ['datafileout', 'consoleout'], level: 'debug' },   
+    }
   }
 
 }

@@ -16,6 +16,8 @@ import * as helper from './helper'
 import * as decorators from './decorators'
 import * as oTypeorm from 'typeorm'
 import schedule from 'node-schedule'
+import { loadLogger } from './loader/logger'
+import log4js, { Logger } from 'log4js'
 
 type methodType = 'get'|'post'|'all'|'put'|'link'|'unlink'|'delete'|'del'|'head'|'options'|'patch'
 
@@ -78,6 +80,8 @@ export interface Hooh {
   scheduleJobs: {
     [props:string]: schedule.Job
   }
+  logger: Logger
+  getLogger: (category: string) => Logger
 }
 
 
@@ -93,6 +97,7 @@ function createSchedulePath (appPath: string): string {
 
 let isOrmSet = false
 
+
 const hooh:Hooh = {
   _config: {},
   Controller,
@@ -101,6 +106,8 @@ const hooh:Hooh = {
   router,
   redis: {} as Redis,
   orm: oTypeorm,
+  logger: log4js.getLogger('default'),
+  getLogger: log4js.getLogger,
   options:(()=>{
     const appPath = path.join(process.cwd(), 'src')
     const appControllerPath = createControllerPath(appPath)
@@ -144,6 +151,8 @@ const hooh:Hooh = {
     if (!helper.isEmpty(ormConfig)) {
       createOrmConnections(ormConfig as OrmConnectionOptions[])
     }
+    // 加载logger
+    loadLogger()
 
     // 加载路由（加载路由时会自动加载控制器）
     loadRoutes(app)
