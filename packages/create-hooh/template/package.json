@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "nodemon ./src/app.ts",
     "prod": "export NODE_ENV=production && node ./app/app.js",
-    "build": "tsc --build --clean && tsc"
+    "clean": "tsc --build --clean",
+    "build": "npm run clean && tsc --build"
   },
   "license": "ISC",
   "dependencies": {
