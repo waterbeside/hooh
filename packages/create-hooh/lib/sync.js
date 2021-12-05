@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const Metalsmith = require('metalsmith')
+const rename = require('metalsmith-rename')
 const ask = require('./ask')
 const template = require('./template')
 
@@ -64,6 +65,9 @@ exports.generate = function (cacheTemplatePath, targetPath, options) {
     metalsmith
       .use(ask(options))
       .use(template(options))
+      .use(rename([
+        [/^gitignore$/, '.gitignore'],
+      ]))
       .clean(true)
       .source('.')
       .destination(targetPath)

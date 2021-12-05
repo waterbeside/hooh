@@ -1,6 +1,6 @@
 {
   "name": "create-hooh",
-  "version": "0.3.0",
+  "version": "0.3.6",
   "description": "Create HOOH",
   "main": "index.js",
   "keywords": [
@@ -21,7 +21,8 @@
     "ejs": "^3.1.6",
     "glob": "^7.2.0",
     "inquirer": "^8.2.0",
-    "metalsmith": "^2.3.0"
+    "metalsmith": "^2.3.0",
+    "metalsmith-rename": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^8.1.0"

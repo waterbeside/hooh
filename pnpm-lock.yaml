@@ -18,6 +18,7 @@ importers:
       glob: ^7.2.0
       inquirer: ^8.2.0
       metalsmith: ^2.3.0
+      metalsmith-rename: ^1.0.0
     dependencies:
       chalk: 4.1.2
       commander: 8.3.0
@@ -26,6 +27,7 @@ importers:
       glob: 7.2.0
       inquirer: 8.2.0
       metalsmith: 2.3.0
+      metalsmith-rename: 1.0.0
     devDependencies:
       eslint: 8.3.0
 
@@ -3722,6 +3724,10 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
     dev: true
+
+  /metalsmith-rename/1.0.0:
+    resolution: {integrity: sha1-k44S3eXrLN1unabVMHDpSFCTrIg=}
+    dev: false
 
   /metalsmith/2.3.0:
     resolution: {integrity: sha1-gzr7taKmOF4tmuPZNeOeM+rqUjE=}
