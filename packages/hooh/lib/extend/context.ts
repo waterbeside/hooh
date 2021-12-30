@@ -22,7 +22,7 @@ declare module 'koa' {
   interface DefaultContext {
     json: (data: any) => void
     apiReturn: TApiReturn
-    input: (key: string, mehod: 'body'|'get', option: IInputOption) => any
+    input: (key?: string, mehod?: 'body'|'get', option?: IInputOption) => any
   }
 }
 
