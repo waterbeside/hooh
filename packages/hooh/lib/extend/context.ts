@@ -1,8 +1,11 @@
 import { Context, Next } from 'koa'
 
+
 type Code = number | [number, number]
 
-type TApiReturn = (code: Code, message: any, data?: any,  extra?: any) => void
+export type TApiReturn = (code: Code, message: any, data?: any,  extra?: any) => void
+
+export type TCtxInput = (key?: string, method?: 'post'|'get'|'body'| null, option?: IInputOption) => any
 
 interface IRturnJson {
   code: number
@@ -18,13 +21,8 @@ interface IInputOption {
   fn?: (val: any) => any
 }
 
-declare module 'koa' {
-  interface DefaultContext {
-    json: (data: any) => void
-    apiReturn: TApiReturn
-    input: (key?: string, mehod?: 'body'|'get', option?: IInputOption) => any
-  }
-}
+
+
 
 const setApiReturn = async function(ctx: Context, next: Next): Promise<void> {
 

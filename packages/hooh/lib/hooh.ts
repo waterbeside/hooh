@@ -2,6 +2,7 @@ import path from 'path'
 import Koa from 'koa'
 import Controller from './controller'
 import Logic from './logic'
+import { TApiReturn, TCtxInput } from './extend/context'
 import configLoader, { LoadConfigRes } from './loader/config'
 import { loadRoutes } from './loader/routes'
 import { loadSchedule } from './loader/schedule'
@@ -52,6 +53,9 @@ interface CreateAppOptions {
 declare module 'koa' {
   interface DefaultContext {
     hooh: Hooh
+    json: (data: any) => void
+    apiReturn: TApiReturn
+    input: TCtxInput
   }
 }
 
