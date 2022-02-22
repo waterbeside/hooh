@@ -43,6 +43,7 @@ Application started，http://localhost:8080
 │   │   └── user.ts
 │   ├── routes # 路由配置文件夹
 │   │   └── index.ts
+│   ├── scheduler  # 定时任务文件夹
 │   └── view # 模板文件夹
 │       └── home
 │           └── index.html
