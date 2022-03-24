@@ -1,6 +1,6 @@
 
 import { Controller, helper } from 'hooh'
-import { lock } from 'hooh/lib/decorators'
+import { lock } from 'hooh/dist/decorators'
 const { sleep } = helper
 
 class Redis extends Controller {
@@ -23,6 +23,7 @@ class Redis extends Controller {
 
   @lock('testLock:data_${data}', { ex: 10, loop: 5 })
   async lockit(): Promise<any> {
+    // await hooh.redis.lock()
     this.ctx.body = 'koa ok!'
     await sleep(2000)
   }
