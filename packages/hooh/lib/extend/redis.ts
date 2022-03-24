@@ -25,16 +25,19 @@ export default class Redis extends IORedis {
    * @param {number} ex  有效时长 (秒) 当大于-1时才设置有效时
    * @return {Promise<any>}
    */
+  async cache<T = any>(cacheKey: string): Promise<T>
+  async cache(cacheKey: string, value: null): Promise<true>
+  async cache(cacheKey: string, value: any, ex: number): Promise<true>
   async cache(cacheKey: string, value: any = false, ex = -1): Promise<any> {
     let res = true
     if (value === null) {
-      this.del(cacheKey)
+      await this.del(cacheKey)
     } else if (value !== false) {
       value = this.formatValue(value)
       if (ex > -1) {
-        this.setex(cacheKey, ex, value)
+        await this.setex(cacheKey, ex, value)
       } else {
-        this.set(cacheKey, value)
+        await this.set(cacheKey, value)
       }
     } else {
       const str = await this.get(cacheKey)
@@ -96,7 +99,7 @@ export default class Redis extends IORedis {
    */
   async lock(lockKey: string, lockOption: LockOptions | null = null): Promise<boolean> {
     const defaultOpt = {
-      ex: 2,
+      ex: 10,
       loop: 50,
       wait: 20
     }

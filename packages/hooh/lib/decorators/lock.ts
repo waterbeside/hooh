@@ -18,7 +18,7 @@ interface LockOptions {
  */
 export function lock(lockKey: string, lockOption: LockOptions | null = null) {
   const defaultOpt = {
-    ex: 2,
+    ex: 10,
     loop: 50,
     wait: 20,
     lockReturn: 'json',
