@@ -113,7 +113,8 @@ const hooh:Hooh = {
   logger: log4js.getLogger('default'),
   getLogger: log4js.getLogger,
   options:(()=>{
-    const appPath = path.join(process.cwd(), 'src')
+    const isDev = process.env.NODE_ENV === 'development'
+    const appPath = path.join(process.cwd(), isDev ? 'src': 'app')
     const appControllerPath = createControllerPath(appPath)
     const appSchedulePath = createSchedulePath(appPath)
     return {
