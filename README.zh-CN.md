@@ -2,6 +2,8 @@
 
 ![HOOH](docs/img/hooh.jpeg)
 
+[English](./README.md) | **简体中文**
+
 **HOOH** 发音 /huː/
 
 是一个为了方便搭建api或MVC服务的后端框架。整合 [KOA2](https://github.com/koajs/koa) + [Typescript](https://github.com/microsoft/TypeScript) + [ioredis](https://github.com/luin/ioredis) + [typeorm](https://github.com/typeorm/typeorm)，开箱即用， 免于复杂的配置。

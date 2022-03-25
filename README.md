@@ -2,6 +2,8 @@
 
 ![HOOH](docs/img/hooh.jpeg)
 
+**English** | [简体中文](./README.zh-CN.md)
+
 **HOOH** pronounce /huː/
 It is a back-end framework for building api or MVC services easily. Integrate [KOA2](https://github.com/koajs/koa) + [Typescript](https://github.com/microsoft/TypeScript) + [ioredis](https://github.com/luin/ioredis) + [typeorm](https://github.com/typeorm/typeorm) out of the box, free from complicated configuration.
 
