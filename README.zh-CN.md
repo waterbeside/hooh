@@ -4,7 +4,47 @@
 
 **HOOH** 发音 /huː/
 
-是一个为了方便搭建api或MVC服务的后端框架。使用 [KOA2](https://github.com/koajs/koa) + [Typescript](https://github.com/microsoft/TypeScript) + [ioredis](https://github.com/luin/ioredis) + [typeorm](https://github.com/typeorm/typeorm) + [nunjucks](https://github.com/mozilla/nunjucks)，开箱即用， 免于复杂的配置。
+是一个为了方便搭建api或MVC服务的后端框架。整合 [KOA2](https://github.com/koajs/koa) + [Typescript](https://github.com/microsoft/TypeScript) + [ioredis](https://github.com/luin/ioredis) + [typeorm](https://github.com/typeorm/typeorm)，开箱即用， 免于复杂的配置。
+
+- [HOOH](#hooh)
+  - [1 快速起步](#1-快速起步)
+    - [创建项目](#创建项目)
+    - [目录结构](#目录结构)
+  - [2 入口文件](#2-入口文件)
+    - [options](#options)
+  - [3 配置文件](#3-配置文件)
+  - [4 路由 Router](#4-路由-router)
+    - [4.1 自定义路由](#41-自定义路由)
+    - [4.2 RouteConfig](#42-routeconfig)
+    - [4.2 自动路由](#42-自动路由)
+  - [5 控制器 Controller](#5-控制器-controller)
+    - [5.1 参数输入](#51-参数输入)
+    - [5.2 api输出](#52-api输出)
+    - [示例](#示例)
+    - [返回](#返回)
+  - [6 数据库](#6-数据库)
+    - [6.1 连接配置](#61-连接配置)
+    - [6.2 定义一个entity](#62-定义一个entity)
+    - [6.3 在控制器内调用数据库](#63-在控制器内调用数据库)
+  - [7 定时任务](#7-定时任务)
+    - [7.1 添加配置](#71-添加配置)
+    - [7.2 定义定时任务控制器](#72-定义定时任务控制器)
+    - [7.3 在入口文件启动定时任务执行](#73-在入口文件启动定时任务执行)
+  - [8 使用Redis缓存](#8-使用redis缓存)
+    - [8.1 配置](#81-配置)
+    - [8.2 使用](#82-使用)
+    - [8.3 其于redis的其它方法](#83-其于redis的其它方法)
+      - [8.3.1 redis.cache](#831-rediscache)
+      - [8.3.2 redis.lock 和 redis.unlock](#832-redislock-和-redisunlock)
+      - [8.3.3 @lock装饰器](#833-lock装饰器)
+      - [8.3.4 @apiCache装饰器](#834-apicache装饰器)
+  - [9 日志](#9-日志)
+  - [部署](#部署)
+    - [转译成js文件](#转译成js文件)
+    - [使用PM2部署](#使用pm2部署)
+      - [安装pm2](#安装pm2)
+      - [编写pm2.json](#编写pm2json)
+      - [启动项目](#启动项目)
 
 ## 1 快速起步
 
@@ -77,7 +117,7 @@ hooh
 | APP_CONTROLLER_PATH | 控制器文件夹位置路径 | string | \`${APP_PATH}/controller/\` | NO |
 | APP_SCHEDULE_PATH | 定时任务文件夹位置路径 | string | \`${APP_PATH}/scheduler/\` | NO |
 | routes | 路由配置 | [RouteConfig](#4_路由_Router) |  | NO |
-| middlewares | 中间件列表, 请参考Koa文档的中间件写法 | Koa.Middleware[] |  | NO |
+| middlewares | 中间件列表, 请参考Koa文档的[中间件](https://github.com/koajs/koa/blob/master/docs/guide.md#writing-middleware)写法 | Koa.Middleware[] |  | NO |
 
 ## 3 配置文件
 
@@ -142,7 +182,7 @@ hooh.createApp({
 
 ### 4.2 自动路由
 
-自动路由为不编写自定义路由文件的情况下，根据访问地址自动匹配对应的控制器，默认为关闭，通过配置"useAutoRouter: true"打开
+自动路由为不编写自定义路由文件的情况下，根据访问地址自动匹配对应的控制器，默认为关闭，通过配置`useAutoRouter: true`打开
 
 ```typescript
 // src/config/index.ts
@@ -175,12 +215,12 @@ export default Home
 >
 > 参数：
 >
-> * Key: *{string}* 请求的参数名。默认返回字符串。当不指定时，则取全部参数，以字典对象返回。
-> * Method: *{string | null}*  请求方法，为 'get' | 'post' | 'body' | null 中的其中一个。 post为body的别称。默认为空，不指定时(即为空时)为全取后合并，并且body优先。
-> * Options:
->   * fn: *{(any)=>any}* 对取得的参数进行加工并返回加工后的值
->   * toNumber: *{boolean}*  是否转为数值类型，默认为 false
->   * multi: *{boolean}* 该参数是否有多个值，默认为 false, 当为true时，以数组型式返回
+> - **Key**: *{string}* 请求的参数名。默认返回字符串。当不指定时，则取全部参数，以字典对象返回。
+> - **Method**: *{string | null}*  请求方法，为 'get' | 'post' | 'body' | null 中的其中一个。 post为body的别称。默认为空，不指定时(即为空时)为全取后合并，并且body优先。
+> - **Options**:
+>   - **fn**: *{(any)=>any}* 对取得的参数进行加工并返回加工后的值
+>   - **toNumber**: *{boolean}*  是否转为数值类型，默认为 false
+>   - **multi**: *{boolean}* 该参数是否有多个值，默认为 false, 当为true时，以数组型式返回
 >
 
 ```typescript
@@ -204,10 +244,10 @@ export default Home
 >
 > 参数：
 >
-> * Code: *{number}* 接口错误码。
-> * Msg: *{string | object}*  当字符串时，为要返回的消息，当为对象时，即为第三个参数，业务的任意数据。
-> * Data: {any} 要返回的任何业务数据, 默认为空
-> * Extra {any} 其它要返回的扩展数据, 默认为空
+> - **Code**: *{number}* 接口错误码。
+> - **Msg**: *{string | object}*  当字符串时，为要返回的消息，当为对象时，即为第三个参数，业务的任意数据。
+> - **Data**: {any} 要返回的任何业务数据, 默认为空
+> - **Extra** {any} 其它要返回的扩展数据, 默认为空
 >
 
 ### 示例
@@ -239,7 +279,6 @@ export default Home
   "extra": null
 }
 ```
-
 
 ## 6 数据库
 
@@ -328,15 +367,10 @@ export default OrmSample
 
 定时任务功能基于[node-schedule](https://github.com/node-schedule/node-schedule)。以下是集成在本框架中的简单使用示例：
 
-### 7.1 添加配置
+> 使用定时任务，须要先了解**cron表达式**：
 
-在 `src/config/schedules.ts`文件中定义一个定时任务
-
-```typescript
-// src/config/schedules.ts
-import { ScheduleConfigItem } from 'hooh'
-
-/** cron 表达式
+```bash
+# cron 表达式
 *    *    *    *    *    *
 ┬    ┬    ┬    ┬    ┬    ┬
 │    │    │    │    │    |
@@ -345,8 +379,16 @@ import { ScheduleConfigItem } from 'hooh'
 │    │    │    └────────── day of month (1 - 31)
 │    │    └─────────────── hour (0 - 23)
 │    └──────────────────── minute (0 - 59)
-└───────────────────────── second (0 - 59, OPTIONAL)
- */
+└───────────────────────── second (0 - 59)
+```
+
+### 7.1 添加配置
+
+在 `src/config/schedules.ts`文件中定义一个定时任务
+
+```typescript
+// src/config/schedules.ts
+import { ScheduleConfigItem } from 'hooh'
 
 const schedules:ScheduleConfigItem[] = [
   {
@@ -354,6 +396,8 @@ const schedules:ScheduleConfigItem[] = [
     cron: '*/10 * * * * *', // cron 表达式
     handle: 'testCron.index', // 对应的控制器
     immediate: false // 是否立即执行
+  }, {
+    // ...其它定时任务
   }
 ]
 export default schedules 
@@ -501,14 +545,14 @@ export default LockSample
 
 > `@lock(Key, LockOptions)` 包含key和ex两参数
 >
-> * Key: *string* 为redis存放数据的key, 字符串内可使用 '${paramName}' 替换对应的请求参数
-> * LockOptions: 配置项包括:
+> - **Key**: *{string}* 为redis存放数据的key, 字符串内可使用 '${paramName}' 替换对应的请求参数
+> - **LockOptions**: 配置项包括:
 >
->   * ex: *{number}* 锁过期的时间（秒），默认10秒
->   * loop: *{number}*  循环请求锁的次数，默认50次
->   * wait: *{number}* 加锁失败时，等待下次解锁的时长（毫秒），默认20亳秒
->   * lockReturn: *{string}*, // 默认值为'json', 当为 'json' 时取锁失败(被其它人锁定)时是否以json返回，一般会返回 {code: -1, msg: "Locked"}。其它值则会执错（返回状态码500）。
->   * errorCode: *{number}* 以json返回时，code的值，默认为-1, 该默认值 可通过配置文件的lockedErrorCode修改
+>   - **ex**: *{number}* 锁过期的时间（秒），默认10秒
+>   - **loop**: *{number}*  循环请求锁的次数，默认50次
+>   - **wait**: *{number}* 加锁失败时，等待下次解锁的时长（毫秒），默认20亳秒
+>   - **lockReturn**: *{string}* 默认值为'json', 当为 'json' 时取锁失败(被其它人锁定)时是否以json返回，一般会返回 `{"code": -1, "msg": "Locked"}`。其它值则会执错（返回状态码500）。
+>   - **errorCode**: *{number}* 以json返回时，code的值，默认为-1, 该默认值 可通过配置文件的`lockedErrorCode`修改
 
 ```typescript
 
@@ -537,10 +581,10 @@ export default LockSample
 #### 8.3.4 @apiCache装饰器
 
 给api控制器添加缓存。
-> `@apiCache(key, ex)` 包含key和ex两参数
+> `@apiCache(key, ex)` 包含`key`和`ex`两参数
 >
-> * Key: *{string}* 为缓存key, 字符串内可使用 '${paramName}' 替换对应的请求参数
-> * ex: *{number}* 为缓存过期时间，单为为秒，默认为300秒
+> - **Key**: *{string}* 为缓存key, 字符串内可使用 '${paramName}' 替换对应的请求参数
+> - **ex**: *{number}* 为缓存过期时间，单为为秒，默认为300秒
 
 ```typescript
 
@@ -560,7 +604,6 @@ class ApiCacheSample extends Controller {
     this.ctx.apiReturn(0, {
       // any data
     })
-    // 执行完代码会自动解锁
   }
 
 }
@@ -592,7 +635,7 @@ hooh.logger.fatal("Your logger message.")
 
 ### 转译成js文件
 
-执行 `npm run build` ，装会在 `app/`目录下生成编译后的js文件。
+执行 `npm run build` ，装会在 `app/`目录下生成转译后的js文件。
 `app/app.js`即为项目的启动文件。
 
 ```bash
